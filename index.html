@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080625">
+  <meta name="description" content="I.R.I.S. — a new roadmap, coming soon.">
+  <meta property="og:title" content="I.R.I.S. — A New Roadmap">
+  <meta property="og:description" content="A new roadmap, coming soon.">
+  <meta property="og:image" content="https://undercoveriris.io/assets/iris-hero.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://undercoveriris.io/">
+  <link rel="icon" href="assets/iris-avatar.jpg">
+  <title>I.R.I.S. — A New Roadmap</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #06051d;
+      --violet: #7357ff;
+      --iris: #9d74ff;
+      --lilac: #e5dcff;
+      --white: #f8f6ff;
+      --muted: #b9abd9;
+      --line: rgba(205, 190, 255, .24);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: var(--night);
+      color: var(--white);
+      font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      position: relative;
+      min-height: 100svh;
+      isolation: isolate;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: clamp(1.5rem, 4vw, 4rem) clamp(1.35rem, 6vw, 7rem);
+      background:
+        radial-gradient(circle at 71% 42%, rgba(146, 103, 255, .22), transparent 34%),
+        linear-gradient(90deg, rgba(5, 5, 28, .98) 0%, rgba(8, 6, 36, .88) 39%, rgba(10, 6, 42, .20) 75%);
+    }
+
+    .hero-image,
+    .noise,
+    .scan,
+    .cursor-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-image {
+      z-index: -4;
+      background-image: url("assets/iris-hero.jpg");
+      background-size: cover;
+      background-position: center center;
+      transform: scale(1.025);
+      animation: awaken 9s cubic-bezier(.2,.7,.2,1) both;
+    }
+
+    .hero-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(5,4,26,.92) 0%, rgba(5,4,26,.72) 35%, rgba(5,4,26,.15) 67%, rgba(5,4,26,.35) 100%),
+        linear-gradient(0deg, rgba(5,4,26,.60), transparent 45%);
+    }
+
+    .noise {
+      z-index: -2;
+      opacity: .17;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    .scan {
+      z-index: -1;
+      opacity: .18;
+      background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(210,194,255,.12) 4px);
+      mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    }
+
+    .cursor-glow {
+      z-index: -1;
+      width: 34rem;
+      height: 34rem;
+      inset: auto;
+      left: var(--x, 70%);
+      top: var(--y, 45%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(172, 113, 255, .15), transparent 66%);
+      transition: left .55s ease-out, top .55s ease-out;
+    }
+
+    header, footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .identity {
+      display: inline-flex;
+      align-items: center;
+      gap: .9rem;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .mark {
+      width: 1.15rem;
+      aspect-ratio: 1 / 1.35;
+      border: 1.5px solid #c7adff;
+      transform: rotate(45deg) skew(-8deg, -8deg);
+      box-shadow: 0 0 14px rgba(164, 113, 255, .9), inset 0 0 10px rgba(167, 116, 255, .45);
+    }
+
+    .wordmark {
+      font-size: .76rem;
+      font-weight: 600;
+      letter-spacing: .48em;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      color: rgba(231, 223, 255, .7);
+      font-size: .66rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .status::before {
+      content: "";
+      width: .36rem;
+      height: .36rem;
+      border-radius: 50%;
+      background: #bd9cff;
+      box-shadow: 0 0 12px #aa7fff;
+      animation: pulse 2.6s ease-in-out infinite;
+    }
+
+    main {
+      align-self: center;
+      position: relative;
+      z-index: 2;
+      max-width: 56rem;
+      padding-block: 4rem;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      margin: 0 0 1.3rem;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(.65rem, 1vw, .78rem);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      animation: reveal .8s .2s both;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: clamp(2rem, 5vw, 4rem);
+      height: 1px;
+      background: linear-gradient(90deg, var(--iris), transparent);
+      box-shadow: 0 0 9px var(--iris);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 11ch;
+      font-size: clamp(3.4rem, 8.5vw, 9rem);
+      font-weight: 300;
+      letter-spacing: -.055em;
+      line-height: .88;
+      text-wrap: balance;
+      text-shadow: 0 0 42px rgba(99, 61, 197, .18);
+      animation: reveal 1s .35s both;
+    }
+
+    h1 span {
+      display: block;
+      margin-top: .16em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(227, 215, 255, .68);
+      text-shadow: 0 0 30px rgba(145, 93, 255, .26);
+    }
+
+    .rule {
+      width: min(28rem, 62vw);
+      height: 1px;
+      margin-top: clamp(2rem, 5vw, 3.4rem);
+      background: linear-gradient(90deg, var(--line), transparent);
+      transform-origin: left;
+      animation: extend 1.2s .7s both;
+    }
+
+    footer {
+      color: rgba(225, 216, 248, .6);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .64rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+    footer a:hover, footer a:focus-visible { color: var(--white); }
+    a:focus-visible { outline: 1px solid var(--lilac); outline-offset: 6px; }
+
+    @keyframes awaken {
+      from { opacity: .55; transform: scale(1.08); filter: saturate(.75) brightness(.72); }
+      to { opacity: 1; transform: scale(1.025); filter: saturate(1) brightness(1); }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(20px); filter: blur(6px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @keyframes extend { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes pulse { 50% { opacity: .38; box-shadow: 0 0 4px #aa7fff; } }
+
+    @media (max-width: 760px) {
+      .page {
+        min-height: 100svh;
+        padding: 1.4rem 1.25rem 1.25rem;
+        background: linear-gradient(0deg, rgba(5,4,25,.98) 0%, rgba(5,4,25,.42) 68%, rgba(5,4,25,.32));
+      }
+
+      .hero-image {
+        background-size: auto 72%;
+        background-repeat: no-repeat;
+        background-position: 69% 9%;
+        transform: none;
+      }
+
+      .hero-image::after {
+        background: linear-gradient(0deg, rgba(5,4,25,.98) 8%, rgba(5,4,25,.72) 43%, rgba(5,4,25,.12) 78%);
+      }
+
+      main {
+        align-self: end;
+        padding: 0 0 11vh;
+      }
+
+      h1 { font-size: clamp(3.25rem, 18vw, 5.5rem); }
+      .status { display: none; }
+      footer span { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+      .cursor-glow { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page" id="page">
+    <div class="hero-image" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="scan" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
+
+    <header>
+      <a class="identity" href="/" aria-label="I.R.I.S. home">
+        <span class="mark" aria-hidden="true"></span>
+        <span class="wordmark">I.R.I.S.</span>
+      </a>
+      <span class="status">Roadmap initializing</span>
+    </header>
+
+    <main>
+      <p class="eyebrow">Integrity &amp; Risk Intelligence Scanner</p>
+      <h1>A new roadmap,<span>coming soon.</span></h1>
+      <div class="rule" aria-hidden="true"></div>
+    </main>
+
+    <footer>
+      <span>Security intelligence for the onchain world</span>
+      <a href="https://x.com/UndercoverIRIS" target="_blank" rel="noreferrer">@UndercoverIRIS ↗</a>
+    </footer>
+  </div>
+
+  <script>
+    const page = document.querySelector('#page');
+    if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      page.addEventListener('pointermove', (event) => {
+        page.style.setProperty('--x', `${event.clientX}px`);
+        page.style.setProperty('--y', `${event.clientY}px`);
+      }, { passive: true });
+    }
+  </script>
+</body>
+</html>
